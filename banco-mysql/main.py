@@ -50,13 +50,14 @@ with connection:
 
     # Lendo valores com SELECT
     with connection.cursor() as cursor:
-        id_recebido = input('Digit un id: ')
-        coluna = 'id'
+        menor_id = int(input('Menor id: '))
+        maior_id = int(input('Maior id: '))
+
         sql = (
             f'SELECT * FROM {TABLE_NAME} '
-            f'WHERE {coluna} = %s '
+            f'WHERE id BETWEEN %s AND %s '
         )
-        cursor.execute(sql, (id_recebido,))
+        cursor.execute(sql, (menor_id, maior_id))
         data1 = cursor.fetchall()
 
         for row in data1:
