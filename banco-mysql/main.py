@@ -47,3 +47,17 @@ with connection:
         cursor.executemany(sql, data)
 
     connection.commit()
+
+    # Lendo valores com SELECT
+    with connection.cursor() as cursor:
+        id_recebido = input('Digit un id: ')
+        coluna = 'id'
+        sql = (
+            f'SELECT * FROM {TABLE_NAME} '
+            f'WHERE {coluna} = %s '
+        )
+        cursor.execute(sql, (id_recebido,))
+        data1 = cursor.fetchall()
+
+        for row in data1:
+            print(row)
