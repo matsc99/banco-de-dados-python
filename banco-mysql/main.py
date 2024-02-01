@@ -64,12 +64,26 @@ with connection:
 
         # Deletando dados do banco com DELETE
         with connection.cursor() as cursor:
-
             sql = (
                 f'DELETE FROM {TABLE_NAME} '
                 f'WHERE id = %s '
             )
             print(cursor.execute(sql, (1,)))
+            connection.commit()
+
+            cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
+
+            for row in cursor.fetchall():
+                print(row)
+
+        # Atualizando dados
+        with connection.cursor() as cursor:
+            sql = (
+                f'UPDATE {TABLE_NAME} '
+                'SET nome = %s, idade=%s '
+                f'WHERE id = %s '
+            )
+            cursor.execute(sql, ('Mateus', 24, 2))
             connection.commit()
 
             cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
