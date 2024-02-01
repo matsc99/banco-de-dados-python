@@ -2,6 +2,7 @@ import os
 
 import pymysql
 import dotenv
+import pymysql.cursors
 
 dotenv.load_dotenv()
 
@@ -10,6 +11,7 @@ connection = pymysql.connect(
     user=os.environ['MYSQL_USER'],
     password=os.environ['MYSQL_PASSWORD'],
     database=os.environ['MYSQL_DATABASE'],
+    cursorclass=pymysql.cursors.DictCursor,
 )
 
 TABLE_NAME = 'customers'
@@ -42,9 +44,17 @@ with connection:
         data = (
             ('Mateus', 24),
             ('Fernanda', 26),
+            ('Marcos', 78),
+            ('Giovanni', 30),
+            ('Fernando', 45),
+            ('Tales', 100),
+            ('Luiz', 89),
         )
 
         cursor.executemany(sql, data)
+
+        for row in cursor.fetchall():
+            print(row)
 
     connection.commit()
 
@@ -68,7 +78,7 @@ with connection:
                 f'DELETE FROM {TABLE_NAME} '
                 f'WHERE id = %s '
             )
-            print(cursor.execute(sql, (1,)))
+            (cursor.execute(sql, (1,)))
             connection.commit()
 
             cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
