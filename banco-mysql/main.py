@@ -58,7 +58,21 @@ with connection:
             f'WHERE id BETWEEN %s AND %s '
         )
         cursor.execute(sql, (menor_id, maior_id))
-        data1 = cursor.fetchall()
 
-        for row in data1:
+        for row in cursor.fetchall():
             print(row)
+
+        # Deletando dados do banco com DELETE
+        with connection.cursor() as cursor:
+
+            sql = (
+                f'DELETE FROM {TABLE_NAME} '
+                f'WHERE id = %s '
+            )
+            print(cursor.execute(sql, (1,)))
+            connection.commit()
+
+            cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
+
+            for row in cursor.fetchall():
+                print(row)
